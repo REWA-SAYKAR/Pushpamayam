@@ -120,8 +120,32 @@ def checkout():
         else:
             messagebox.showerror('ERROR','Please enter the customer name.')    
     
-    
-                
+
+#TO ADD EXTRA FUNCTIONALITY OF SENDING THE RECEIPT ON WHATSAPP
+import pywhatkit
+#from import_mobile_no import MobileNo
+from urllib.parse import quote            
+def send_msg():
+    if flower1_quantity!=0 or flower2_quantity!=0 or flower3_quantity!=0:
+        if qty1 != 0 and qty2 == 0 and qty3 == 0:
+            Msg = 'Thankyou for choosing _Pushpamayam_ Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty1)+' Anemones. Thank you! We will love to see you again!'
+        elif qty1 == 0 and qty2 != 0 and qty3 == 0:
+            Msg = 'Thankyou for choosing _Pushpamayam_  Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty2)+' White Roses. Thank you! We will love to see you again!'
+        elif qty1 == 0 and qty2 == 0 and qty3 != 0:
+            Msg = 'Thankyou for choosing _Pushpamayam_ Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty3)+' Tulips. Thank you! We will love to see you again!'
+        elif qty1 != 0 and qty2 != 0 and qty3 == 0:
+            Msg = 'Thankyou for choosing _Pushpamayam_ Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty1)+' Anemones and '+str(qty2)+' White Roses. Thank you! We will love to see you again!'
+        elif qty1 == 0 and qty2 != 0 and qty3 != 0:
+            Msg = 'Thankyou for choosing _Pushpamayam_ Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty2)+' White Roses and '+str(qty3)+' Tulips. Thank you! We will love to see you again!'
+        elif qty1 != 0 and qty2 == 0 and qty3 != 0:
+            Msg = 'Thankyou for choosing _Pushpamayam_ Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty1)+' Anemones and '+str(qty3)+' Tulips. Thank you! We will love to see you again!'
+        elif qty1 != 0 and qty2 != 0 and qty3 != 0: 
+            Msg = 'Thankyou for choosing our _Pushpamayam_  Mr./Mrs. '+ customer_entry.get() +'.  Your total bill is Rs. '+str(total_price)+'. You ordered '+str(qty1)+' Anemones, '+str(qty2)+' White Roses and '+str(qty3)+' Tulips. Thank you! We will love to see you again!'
+        now = datetime.now()
+        hr = int(now.strftime("%H"))
+        min = int(now.strftime("%M")) + 2
+        MobileNo = "+91 "+number_entry.get()
+        pywhatkit.sendwhatmsg(MobileNo,Msg,hr,min)                
 
 variable1 = StringVar()
 variable2 = StringVar()
@@ -196,6 +220,15 @@ checkout_button.place(x=340,y=360)
 price_label = customtkinter.CTkLabel(frame2,font=font1,text='',text_color='#0f0',bg_color='#0E0F0F')
 price_label.place(x=540,y=370)
 
+#MAKING CHANGES IN GUI DESIGN FOR THE EXTRA SENDING FUNCTIONALITY
+wp_image = Image.open("/home/hp/RPPOOP SY/CustTk_flower_project/wp_img.png").resize((30,30))
+wp_img = ImageTk.PhotoImage(wp_image)
+
+send_button = customtkinter.CTkButton(frame2,image= wp_img,text= " ",command=send_msg,font=font1,fg_color='#0E0F0F',hover_color='#0E0F0F',bg_color='#0E0F0F',cursor = 'hand2',corner_radius=30,width= 30,height= 30)
+send_button.place(x=498,y=405)
+
+number_entry = customtkinter.CTkEntry(frame2,font=font1,text_color='#000',fg_color='#fff',border_color='#fff',width=150, height= 29)
+number_entry.place(x=568,y=406)
 
 get_flowers()
 get_quantity()
